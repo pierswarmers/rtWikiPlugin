@@ -1,0 +1,4 @@
+gnWikiPage:
+  inheritance:
+    type:              concrete
+    extends:           gnPage
