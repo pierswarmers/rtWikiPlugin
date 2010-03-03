@@ -109,7 +109,11 @@ class BasegnWikiPageActions extends sfActions
 
   public function executeEdit(sfWebRequest $request)
   {
-    $this->form = new gnWikiPageForm($this->getRoute()->getObject());
+    $gn_wiki_page = $this->getRoute()->getObject();
+    //var_dump($gn_wiki_page->Translation[$this->getUser()->getCulture()]->getTags());
+
+
+    $this->form = new gnWikiPageForm($gn_wiki_page);
   }
 
   public function executeUpdate(sfWebRequest $request)
