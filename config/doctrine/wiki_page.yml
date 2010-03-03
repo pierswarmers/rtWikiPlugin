@@ -1,4 +1,8 @@
 gnWikiPage:
+
   inheritance:
     type:              concrete
     extends:           gnPage
+
+  columns:
+    is_root:           { type: boolean, default: false }
