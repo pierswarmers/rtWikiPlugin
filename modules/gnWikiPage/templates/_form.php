@@ -32,14 +32,18 @@
   </div>
 
   <?php echo $form->renderHiddenFields() ?>
-  
-  <?php if (!$form->getObject()->isNew()): ?>
-    <?php if(is_null($form->getObject()->getDeletedAt())): ?>
-      <?php echo link_to('Delete this page', 'gnWikiPage/delete?id='.$form->getObject()->getId(), array('method' => 'delete', 'confirm' => 'Are you sure?', 'class' => 'button warning medium')) ?>
-    <?php else: ?>
-      <?php echo link_to('Undelete this page', 'gnWikiPage/undelete?id='.$form->getObject()->getId(), array('method' => 'get', 'class' => 'button warning medium')) ?>
+
+  <div class="gn-form-row clearfix">
+    <?php if (!$form->getObject()->isNew()): ?>
+      <?php if(is_null($form->getObject()->getDeletedAt())): ?>
+        <?php echo link_to('Delete this page', 'gnWikiPage/delete?id='.$form->getObject()->getId(), array('method' => 'delete', 'confirm' => 'Are you sure?', 'class' => 'button warning medium')) ?>
+      <?php else: ?>
+        <?php echo link_to('Undelete this page', 'gnWikiPage/undelete?id='.$form->getObject()->getId(), array('method' => 'get', 'class' => 'button warning medium')) ?>
+      <?php endif; ?>
     <?php endif; ?>
-  <?php endif; ?>
-  <button type="submit" class="button positive medium right"><?php echo __('Save your changes') ?></button>
+    <button type="submit" class="button positive medium right"><?php echo __('Save your changes') ?></button>
+  </div>
 
 </form>
+
+<?php include_component('gnAsset', 'form', array('object' => $form->getObject())) ?>
