@@ -4,14 +4,7 @@
 
 <h1<?php echo  !is_null($gn_wiki_page->getDeletedAt())? ' class="deleted"' : ''?>><?php echo $gn_wiki_page->getTitle() ?></h1>
 
-<?php //echo $primary_image ? '<div class="gn-primary-image">'. image_tag($primary_image->getWebPath()) .'</div>'  : '' ?>
-
-
-<?php
-
-echo markdown_to_html($gn_wiki_page->getContent(), $gn_wiki_page);
-
-?>
+<?php echo markdown_to_html($gn_wiki_page->getContent(), $gn_wiki_page); ?>
 
 <dl class="gn-meta-data">
   <dt><?php echo __('Created') ?>:</dt>
