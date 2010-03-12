@@ -40,8 +40,13 @@ class BasegnWikiPageActions extends sfActions
   public function executeShow(sfWebRequest $request)
   {
     $this->gn_wiki_page = $this->getRoute()->getObject();
-
     $this->forward404Unless($this->gn_wiki_page);
+    $this->updateResponse($this->gn_wiki_page);
+  }
+
+  private function updateResponse(gnWikiPage $page)
+  {
+    gnResponseToolkit::setCommonMetasFromPage($page, $this->getUser(), $this->getResponse());
   }
 
   public function executeRevert(sfWebRequest $request)
