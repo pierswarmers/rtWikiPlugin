@@ -1,6 +1,8 @@
 <?php use_stylesheets_for_form($form) ?>
 <?php use_javascripts_for_form($form) ?>
+<?php use_stylesheet('/gnCorePlugin/vendor/jquery/css/tools/jquery.tools.css'); ?>
 <?php use_javascript('/gnCorePlugin/js/jquery-1.4.2.min.js') ?>
+<?php use_javascript('/gnCorePlugin/vendor/jquery/js/jquery.tools.min.js', 'last'); ?>
 <?php use_helper('I18N', 'GnForm') ?>
 
 <form id="gnWikiPageForm" action="<?php echo url_for('gnWikiPage/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="post" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?>>
@@ -14,6 +16,7 @@
     <?php echo render_form_row($form[$sf_user->getCulture()]['title'], array('wide' => true)) ?>
     <?php echo render_form_row($form['published']) ?>
     <?php echo render_form_row($form[$sf_user->getCulture()]['content'], array('wide' => true)) ?>
+    <a href="#" rel="#gnLinkPanel">Insert Link</a>
   </fieldset>
 
   <fieldset class="gn-form-collapse">
@@ -55,3 +58,5 @@
 <?php include_component('gnAsset', 'form', array('object' => $form->getObject())) ?>
 <?php end_slot(); ?>
 
+
+<?php include_partial('gnSearch/ajaxForm', array('form' => new gnSearchForm()))?>
