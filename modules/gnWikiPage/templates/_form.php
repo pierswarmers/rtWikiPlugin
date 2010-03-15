@@ -16,7 +16,8 @@
     <?php echo render_form_row($form[$sf_user->getCulture()]['title'], array('wide' => true)) ?>
     <?php echo render_form_row($form['published']) ?>
     <?php echo render_form_row($form[$sf_user->getCulture()]['content'], array('wide' => true)) ?>
-    <a href="#" rel="#gnLinkPanel">Insert Link</a>
+
+    <?php include_partial('gnSearch/ajaxForm', array('form' => new gnSearchForm(), 'targetId' => 'gn_wiki_page_en_content')) ?>
   </fieldset>
 
   <fieldset class="gn-form-collapse">
@@ -57,6 +58,3 @@
 </p>
 <?php include_component('gnAsset', 'form', array('object' => $form->getObject())) ?>
 <?php end_slot(); ?>
-
-
-<?php include_partial('gnSearch/ajaxForm', array('form' => new gnSearchForm()))?>
