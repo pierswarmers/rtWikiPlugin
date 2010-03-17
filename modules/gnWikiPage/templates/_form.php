@@ -3,7 +3,7 @@
 <?php use_stylesheet('/gnCorePlugin/vendor/jquery/css/tools/jquery.tools.css'); ?>
 <?php use_javascript('/gnCorePlugin/js/jquery-1.4.2.min.js') ?>
 <?php use_javascript('/gnCorePlugin/vendor/jquery/js/jquery.tools.min.js', 'last'); ?>
-<?php use_helper('I18N', 'GnForm') ?>
+<?php use_helper('I18N', 'gnForm') ?>
 
 <form id="gnWikiPageForm" action="<?php echo url_for('gnWikiPage/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" method="post" <?php $form->isMultipart() and print 'enctype="multipart/form-data" ' ?>>
   <fieldset>
@@ -15,9 +15,7 @@
     <?php echo $form->renderGlobalErrors() ?>
     <?php echo render_form_row($form[$sf_user->getCulture()]['title'], array('wide' => true)) ?>
     <?php echo render_form_row($form['published']) ?>
-    <?php echo render_form_row($form[$sf_user->getCulture()]['content'], array('wide' => true)) ?>
-
-    <?php include_partial('gnSearch/ajaxForm', array('form' => new gnSearchForm(), 'targetId' => 'gn_wiki_page_en_content')) ?>
+    <?php echo render_form_row($form[$sf_user->getCulture()]['content'], array('wide' => true, 'markdown' => true)) ?>
   </fieldset>
 
   <fieldset class="gn-form-collapse">
