@@ -15,7 +15,8 @@
     <?php echo $form->renderGlobalErrors() ?>
     <?php echo render_form_row($form[$sf_user->getCulture()]['title'], array('wide' => true)) ?>
     <?php echo render_form_row($form['published']) ?>
-    <?php echo render_form_row($form[$sf_user->getCulture()]['content'], array('wide' => true, 'markdown' => true)) ?>
+    <?php echo $form[$sf_user->getCulture()]['content']->render(); ?>
+    <?php //echo render_form_row($form[$sf_user->getCulture()]['content'], array('wide' => true, 'markdown' => true)) ?>
   </fieldset>
 
   <fieldset class="gn-form-collapse">
