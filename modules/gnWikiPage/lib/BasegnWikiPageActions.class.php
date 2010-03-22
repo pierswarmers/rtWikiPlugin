@@ -52,9 +52,7 @@ class BasegnWikiPageActions extends sfActions
   public function executeRevert(sfWebRequest $request)
   {
     $this->gn_wiki_pages = $this->getRoute()->getObject();
-
     $this->gn_wiki_pages->Translation[$this->getUser()->getCulture()]->revert($request->getParameter('revert_to'));
-
     $this->gn_wiki_pages->save();
     $this->getUser()->setFlash('notice', 'Reverted to version ' . $request->getParameter('revert_to'), false);
     $this->redirect('gn_wiki_page_show',$this->gn_wiki_pages);
@@ -68,7 +66,6 @@ class BasegnWikiPageActions extends sfActions
   public function executeCompare(sfWebRequest $request)
   {
     $this->gn_wiki_page = $this->getRoute()->getObject();
-
     $this->current_version = $this->gn_wiki_page->Translation[$this->getUser()->getCulture()]->version;
 
     if(!$request->hasParameter('version1') || !$request->hasParameter('version2'))
@@ -79,11 +76,7 @@ class BasegnWikiPageActions extends sfActions
 
     $this->version_1 = $request->getParameter('version1');
     $this->version_2 = $request->getParameter('version2');
-
-    //$page_2 = $this->gn_wiki_page->copy(true);
-
     $t = $this->gn_wiki_page->Translation[$this->getUser()->getCulture()];
-
     $this->versions = array();
 
     $this->versions[1] = array(
@@ -104,49 +97,36 @@ class BasegnWikiPageActions extends sfActions
   public function executeCreate(sfWebRequest $request)
   {
     //$request->checkCSRFProtection();
-
     $this->form = new gnWikiPageForm();
-
     $this->processForm($request, $this->form);
-
     $this->setTemplate('new');
   }
 
   public function executeEdit(sfWebRequest $request)
   {
     $gn_wiki_page = $this->getRoute()->getObject();
-    //var_dump($gn_wiki_page->Translation[$this->getUser()->getCulture()]->getTags());
-
-
     $this->form = new gnWikiPageForm($gn_wiki_page);
   }
 
   public function executeUpdate(sfWebRequest $request)
   {
     //$request->checkCSRFProtection();
-
     $this->form = new gnWikiPageForm($this->getRoute()->getObject());
-
     $this->processForm($request, $this->form);
-
     $this->setTemplate('edit');
   }
 
   public function executeDelete(sfWebRequest $request)
   {
-    $request->checkCSRFProtection();
-
+    //$request->checkCSRFProtection();
     $this->getRoute()->getObject()->delete();
-
     $this->redirect('gnWikiPage/index');
   }
 
   public function executeUndelete(sfWebRequest $request)
   {
-    $request->checkCSRFProtection();
-
+    //$request->checkCSRFProtection();
     $this->getRoute()->getObject()->undelete();
-
     $this->redirect('gn_wiki_page_show', $this->getRoute()->getObject());
   }
 
@@ -155,9 +135,13 @@ class BasegnWikiPageActions extends sfActions
     $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
     if ($form->isValid())
     {
+      $was_created = $form->getObject()->isNew();
       $form->save();
-
-      $this->redirect('gn_wiki_page_show', $this->getRoute()->getObject());
+      if($was_created)
+      {
+        $this->redirect('gn_wiki_page_edit', $form->getObject());
+      }
+      $this->redirect('gn_wiki_page_show', $form->getObject());
     }
   }
 }
