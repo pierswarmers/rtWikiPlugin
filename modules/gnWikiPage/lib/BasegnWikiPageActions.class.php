@@ -139,9 +139,11 @@ class BasegnWikiPageActions extends sfActions
       $form->save();
       if($was_created)
       {
+        $this->getUser()->setFlash('success', 'Page created successfully.');
         $this->redirect('gn_wiki_page_edit', $form->getObject());
       }
       $this->redirect('gn_wiki_page_show', $form->getObject());
     }
+    $this->getUser()->setFlash('error', 'Some errors were found, see below for details.');
   }
 }
