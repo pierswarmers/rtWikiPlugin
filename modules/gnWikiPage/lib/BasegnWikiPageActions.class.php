@@ -42,6 +42,7 @@ class BasegnWikiPageActions extends sfActions
     $this->gn_wiki_page = $this->getRoute()->getObject();
     $this->forward404Unless($this->gn_wiki_page);
     $this->updateResponse($this->gn_wiki_page);
+    $this->clearCache();
   }
 
   private function updateResponse(gnWikiPage $page)
@@ -51,11 +52,12 @@ class BasegnWikiPageActions extends sfActions
 
   public function executeRevert(sfWebRequest $request)
   {
-    $this->gn_wiki_pages = $this->getRoute()->getObject();
-    $this->gn_wiki_pages->Translation[$this->getUser()->getCulture()]->revert($request->getParameter('revert_to'));
-    $this->gn_wiki_pages->save();
+    $this->gn_wiki_page = $this->getRoute()->getObject();
+    $this->gn_wiki_page->Translation[$this->getUser()->getCulture()]->revert($request->getParameter('revert_to'));
+    $this->gn_wiki_page->save();
     $this->getUser()->setFlash('notice', 'Reverted to version ' . $request->getParameter('revert_to'), false);
-    $this->redirect('gn_wiki_page_show',$this->gn_wiki_pages);
+    $this->clearCache();
+    $this->redirect('gn_wiki_page_show',$this->gn_wiki_page);
   }
 
   public function executeVersions(sfWebRequest $request)
@@ -119,6 +121,7 @@ class BasegnWikiPageActions extends sfActions
   public function executeDelete(sfWebRequest $request)
   {
     //$request->checkCSRFProtection();
+    $this->clearCache();
     $this->getRoute()->getObject()->delete();
     $this->redirect('gnWikiPage/index');
   }
@@ -126,6 +129,7 @@ class BasegnWikiPageActions extends sfActions
   public function executeUndelete(sfWebRequest $request)
   {
     //$request->checkCSRFProtection();
+    $this->clearCache();
     $this->getRoute()->getObject()->undelete();
     $this->redirect('gn_wiki_page_show', $this->getRoute()->getObject());
   }
@@ -137,6 +141,7 @@ class BasegnWikiPageActions extends sfActions
     {
       $was_created = $form->getObject()->isNew();
       $form->save();
+      $this->clearCache();
       if($was_created)
       {
         $this->getUser()->setFlash('success', 'Page created successfully.');
@@ -145,5 +150,16 @@ class BasegnWikiPageActions extends sfActions
       $this->redirect('gn_wiki_page_show', $form->getObject());
     }
     $this->getUser()->setFlash('error', 'Some errors were found, see below for details.');
+  }
+
+  private function clearCache()
+  {
+    $cache = $this->getContext()->getViewCacheManager();
+
+    if ($cache)
+    {
+      $cache->remove('gnWikiPage/index?sf_format=*');
+      $cache->remove(sprintf('gnWikiPage/show?id=%s&slug=%s', $this->getRoute()->getObject()->getId(), $this->getRoute()->getObject()->getSlug()));
+    }
   }
 }
