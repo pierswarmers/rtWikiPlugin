@@ -28,7 +28,7 @@ class BasegnWikiPageActions extends sfActions
   }
 
   /**
-   *
+   * Executes the index page.
    * @param sfWebRequest $request
    * @property Test $_page
    */
@@ -36,13 +36,18 @@ class BasegnWikiPageActions extends sfActions
   {
     $this->gn_wiki_pages = Doctrine::getTable('gnWikiPage')->findAll();
   }
-
+  
   public function executeShow(sfWebRequest $request)
   {
     $this->gn_wiki_page = $this->getRoute()->getObject();
     $this->forward404Unless($this->gn_wiki_page);
+
+    if(!$this->gn_wiki_page->isPublished() && !$this->getUser()->hasCredential(sfConfig::get('app_gn_wiki_admin_credential', 'admin_wiki')))
+    {
+      $this->forward('gnGuardAuth','secure');
+    }
+    
     $this->updateResponse($this->gn_wiki_page);
-    $this->clearCache();
   }
 
   private function updateResponse(gnWikiPage $page)
@@ -147,7 +152,7 @@ class BasegnWikiPageActions extends sfActions
         $this->getUser()->setFlash('success', 'Page created successfully.');
         $this->redirect('gn_wiki_page_edit', $form->getObject());
       }
-      $this->redirect('gn_wiki_page_show', $form->getObject());
+      $this->redirect('gn_wiki_page_show' . $form->getObject()->isPublished() ? '' : '_unpublished', $form->getObject());
     }
     $this->getUser()->setFlash('error', 'Some errors were found, see below for details.');
   }
@@ -160,6 +165,7 @@ class BasegnWikiPageActions extends sfActions
     {
       $cache->remove('gnWikiPage/index?sf_format=*');
       $cache->remove(sprintf('gnWikiPage/show?id=%s&slug=%s', $this->getRoute()->getObject()->getId(), $this->getRoute()->getObject()->getSlug()));
+      $cache->remove('@sf_cache_partial?module=gnWikiPage&action=_wiki_page&sf_cache_key='.$this->getRoute()->getObject()->getId());
     }
   }
 }
