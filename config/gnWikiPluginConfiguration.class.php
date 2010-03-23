@@ -29,16 +29,21 @@ class gnWikiPluginConfiguration extends sfPluginConfiguration
       'gn_wiki_page_index',
       new sfRoute('/wiki',array('module' => 'gnWikiPage', 'action' => 'index'))
     );
-    
+
     $routing->prependRoute(
-      	'gn_wiki_page_show',
-        new sfDoctrineRoute(
-        	'/wiki/:slug/:id',
-            array('module' => 'gnWikiPage', 'action' => 'show'),
-            array('id' => '\d+', 'sf_method' => array('get')),
-            array('model' => 'gnWikiPage', 'type' => 'object')
-        )
-      );
+      'gn_wiki_page_index_admin',
+      new sfRoute('/wiki_admin',array('module' => 'gnWikiPage', 'action' => 'index_admin'))
+    );
+
+    $routing->prependRoute(
+      'gn_wiki_page_show',
+      new sfDoctrineRoute(
+        '/wiki/:slug/:id',
+          array('module' => 'gnWikiPage', 'action' => 'show'),
+          array('id' => '\d+', 'sf_method' => array('get')),
+          array('model' => 'gnWikiPage', 'type' => 'object')
+      )
+    );
 
     $routing->prependRoute('gn_page', new sfDoctrineRouteCollection(array(
       'name'                => 'gn_wiki_page',
