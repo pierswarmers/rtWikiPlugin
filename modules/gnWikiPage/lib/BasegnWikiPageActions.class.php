@@ -34,7 +34,14 @@ class BasegnWikiPageActions extends sfActions
    */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->gn_wiki_pages = Doctrine::getTable('gnWikiPage')->findAll();
+    if($this->isAdmin())
+    {
+      $this->gn_wiki_pages = Doctrine::getTable('gnWikiPage')->findAllPages();
+    }
+    else
+    {
+      $this->gn_wiki_pages = Doctrine::getTable('gnWikiPage')->findAllPublished();
+    }
   }
   
   public function executeShow(sfWebRequest $request)
@@ -42,11 +49,16 @@ class BasegnWikiPageActions extends sfActions
     $this->gn_wiki_page = $this->getRoute()->getObject();
     $this->forward404Unless($this->gn_wiki_page);
 
-    if(!$this->gn_wiki_page->isPublished() && !$this->getUser()->hasCredential(sfConfig::get('app_gn_wiki_admin_credential', 'admin_wiki')))
+    if(!$this->gn_wiki_page->isPublished() && !$this->isAdmin())
     {
       $this->forward('gnGuardAuth','secure');
     }
-    
+
+    if(!is_null($this->gn_wiki_page->getDeletedAt()) && !$this->isAdmin())
+    {
+      $this->forward404();
+    }
+
     $this->updateResponse($this->gn_wiki_page);
   }
 
@@ -167,5 +179,9 @@ class BasegnWikiPageActions extends sfActions
       $cache->remove(sprintf('gnWikiPage/show?id=%s&slug=%s', $this->getRoute()->getObject()->getId(), $this->getRoute()->getObject()->getSlug()));
       $cache->remove('@sf_cache_partial?module=gnWikiPage&action=_wiki_page&sf_cache_key='.$this->getRoute()->getObject()->getId());
     }
+  }
+  private function isAdmin()
+  {
+    return $this->getUser()->hasCredential(sfConfig::get('app_gn_wiki_admin_credential', 'admin_wiki'));
   }
 }

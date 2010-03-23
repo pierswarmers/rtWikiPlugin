@@ -1,12 +1,11 @@
 <?php
-
 include_partial('use');
 include_partial('tools');
-
 ?>
 
-<h1><?php echo('Wiki Index') ?></h1>
+<h1><?php echo __('Wiki Index') ?></h1>
 
+<?php if(count($gn_wiki_pages) > 0): ?>
 <ul>
   <?php foreach ($gn_wiki_pages as $gn_wiki_page): ?>
   <li<?php echo !is_null($gn_wiki_page->getDeletedAt())  ? ' class="deleted"' : '' ?>>
@@ -19,3 +18,6 @@ include_partial('tools');
   </li>
   <?php endforeach; ?>
 </ul>
+<?php else: ?>
+<p class="notice"><?php echo __('No pages available yet, please visit again later.') ?></p>
+<?php endif; ?>
