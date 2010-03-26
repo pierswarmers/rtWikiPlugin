@@ -1,10 +1,11 @@
 <?php include_partial('use') ?>
+        
+<h1>Comparing Versions: <?php echo $gn_wiki_page->getTitle() ?></h1>
 
 <ul class="gn-tools">
   <li><?php echo link_to('&larr;'.__(' Back'), 'gnWikiPage/show?id='.$gn_wiki_page->getId()) ?></li>
 </ul>
-        
-<h1>Comparing Versions: <?php echo $gn_wiki_page->getTitle() ?></h1>
+
 <form action="<?php echo url_for('gnWikiPage/compare?id='.$gn_wiki_page->getId()) ?>">
   <table class="stretch">
     <thead>
