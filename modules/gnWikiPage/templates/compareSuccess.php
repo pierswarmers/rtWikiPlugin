@@ -11,9 +11,9 @@
 <table class="gn-version-comparison">
   <thead>
     <tr>
-      <th>&nbsp;</th>
-      <th>Version <?php echo $version_1 ?><?php echo $current_version == $version_1 ? ' (Current)' : '' ?></th>
-      <th>Version <?php echo $version_2 ?><?php echo $current_version == $version_2 ? ' (Current)' : '' ?></th>
+      <th class="name">&nbsp;</th>
+      <th class="comp1">Version <?php echo $version_1 ?><?php echo $current_version == $version_1 ? ' (Current)' : '' ?></th>
+      <th class="comp2">Version <?php echo $version_2 ?><?php echo $current_version == $version_2 ? ' (Current)' : '' ?></th>
     </tr>
   </thead>
   <tbody>
@@ -24,8 +24,8 @@
     </tr>
     <tr>
       <td><strong>Content</strong></td>
-      <td><pre><?php echo $versions[1]['content'] ?></pre></td>
-      <td><pre><?php echo $versions[2]['content'] ?></pre></td>
+      <td><?php echo nl2br($versions[1]['content']) ?></td>
+      <td><?php echo nl2br($versions[2]['content']) ?></td>
     </tr>
       <tr>
         <td>&nbsp;</td>
