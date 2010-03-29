@@ -13,7 +13,7 @@ include_partial('tools');
     <?php echo link_to($gn_wiki_page->getTitle(), 'gn_wiki_page_show',$gn_wiki_page) ?>
     <small>
       <strong><?php echo !is_null($gn_wiki_page->getDeletedAt())  ? __('Deleted') : __('Updated') ?>:</strong>
-      <?php echo format_date($date, 'U', $sf_user->getCulture()) ?>
+      <?php echo time_ago_in_words_abbr($date, $sf_user->getCulture()) ?>
     </small>
   </li>
   <?php endforeach; ?>
