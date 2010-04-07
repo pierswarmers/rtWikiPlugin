@@ -34,6 +34,7 @@ class BasegnWikiPageActions extends sfActions
    */
   public function executeIndex(sfWebRequest $request)
   {
+    gnTemplateToolkit::setFrontendTemplateDir();
     if($this->isAdmin())
     {
       $this->gn_wiki_pages = Doctrine::getTable('gnWikiPage')->findAllPages();
@@ -46,6 +47,7 @@ class BasegnWikiPageActions extends sfActions
   
   public function executeShow(sfWebRequest $request)
   {
+    gnTemplateToolkit::setFrontendTemplateDir();
     $this->gn_wiki_page = $this->getRoute()->getObject();
     $this->forward404Unless($this->gn_wiki_page);
 

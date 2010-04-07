@@ -66,4 +66,3 @@ class gnWikiPluginConfiguration extends sfPluginConfiguration
     );
   }
 }
-?>
