@@ -48,6 +48,9 @@
   <fieldset class="gn-form-collapse">
     <legend onclick="$('#gnPanelOrganisation').slideToggle();"><?php echo __('Organisation') ?></legend>
     <div id="gnPanelOrganisation" style="display:none;">
+      <?php if(gnSiteToolkit::isMultiSiteEnabled()): ?>
+      <?php echo render_form_row($form['site_id']) ?>
+      <?php endif; ?>
       <?php echo render_form_row($form['is_root']) ?>
       <?php echo render_form_row($form['slug']) ?>
     </div>
