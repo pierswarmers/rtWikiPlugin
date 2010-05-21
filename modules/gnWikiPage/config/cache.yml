@@ -1,16 +1,6 @@
-_wiki_page:
+<?php if(!sfConfig::get('app_gn_wiki_is_private', false)): ?>
+
+show:
   enabled:     true
-
-<?php if(sfConfig::get('app_gn_wiki_is_private', false)): ?>
-
-#_wiki_page:
-#  enabled:     true
-
-<?php else: ?>
-
-#index:
-#  enabled:     true
-#show:
-#  enabled:     true
 
 <?php endif; ?>
