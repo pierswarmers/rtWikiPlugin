@@ -127,6 +127,24 @@ class gnWikiPageAdminActions extends sfActions
     if ($form->isValid())
     {
       $gn_wiki_page = $form->save();
+
+      if($gn_wiki_page->getIsRoot())
+      {
+        // Run a clean on other wiki pages marked as root. Only one root page allowed.
+        $gn_wiki_pages = Doctrine::getTable('gnWikiPage')->findByIsRoot(1);
+
+        if($gn_wiki_pages and count($gn_wiki_pages > 1))
+        {
+          foreach($gn_wiki_pages as $page)
+          {
+            if($page->getId() != $gn_wiki_page->getId())
+            {
+              $page->setIsRoot(0);
+              $page->save();
+            }
+          }
+        }
+      }
       $this->redirect('gnWikiPageAdmin/index');
     }
   }

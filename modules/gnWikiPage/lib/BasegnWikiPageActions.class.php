@@ -35,9 +35,12 @@ class BasegnWikiPageActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     gnTemplateToolkit::setFrontendTemplateDir();
-    if($this->isAdmin())
+
+    $this->gn_wiki_page = Doctrine::getTable('gnWikiPage')->findOneByIsRoot(1);
+
+    if($this->gn_wiki_page)
     {
-      $this->gn_wiki_pages = Doctrine::getTable('gnWikiPage')->findAllPages();
+      $this->setTemplate('show');
     }
     else
     {
@@ -54,6 +57,11 @@ class BasegnWikiPageActions extends sfActions
     if(!$this->gn_wiki_page->isPublished() && !$this->isAdmin())
     {
       $this->forward('gnGuardAuth','secure');
+    }
+
+    if($this->gn_wiki_page->getIsRoot())
+    {
+      $this->redirect('@gn_wiki_page_index');
     }
 
     $this->updateResponse($this->gn_wiki_page);
