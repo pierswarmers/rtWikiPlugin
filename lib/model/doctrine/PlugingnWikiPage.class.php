@@ -12,5 +12,8 @@
  */
 abstract class PlugingnWikiPage extends BasegnWikiPage
 {
-
+  public function getTypeNice()
+  {
+    return 'Wiki Page';
+  }
 }
