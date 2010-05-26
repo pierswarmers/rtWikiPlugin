@@ -60,7 +60,6 @@ class gnWikiPageAdminActions extends sfActions
     $this->form = new gnWikiPageForm($gn_wiki_page);
 
     $this->processForm($request, $this->form);
-    $this->clearCache($request);
     $this->setTemplate('edit');
   }
 
@@ -70,18 +69,7 @@ class gnWikiPageAdminActions extends sfActions
 
     $gn_wiki_page = $this->getGnWikiPage($request);
     $gn_wiki_page->delete();
-    $this->clearCache($request);
-
-    $this->redirect('gnWikiPageAdmin/index');
-  }
-
-  public function executeUndelete(sfWebRequest $request)
-  {
-    $request->checkCSRFProtection();
-
-    $gn_wiki_page = $this->getGnWikiPage($request);
-    $gn_wiki_page->undelete();
-    $this->clearCache($request);
+    $this->clearCache($gn_wiki_page);
 
     $this->redirect('gnWikiPageAdmin/index');
   }
@@ -127,13 +115,14 @@ class gnWikiPageAdminActions extends sfActions
     if ($form->isValid())
     {
       $gn_wiki_page = $form->save();
-
+      $this->clearCache($gn_wiki_page);
+      
       if($gn_wiki_page->getIsRoot())
       {
         // Run a clean on other wiki pages marked as root. Only one root page allowed.
         $gn_wiki_pages = Doctrine::getTable('gnWikiPage')->findByIsRoot(1);
 
-        if($gn_wiki_pages and count($gn_wiki_pages > 1))
+        if($gn_wiki_pages)
         {
           foreach($gn_wiki_pages as $page)
           {
@@ -155,19 +144,22 @@ class gnWikiPageAdminActions extends sfActions
     $this->gn_wiki_page->revert($request->getParameter('revert_to'));
     $this->gn_wiki_page->save();
     $this->getUser()->setFlash('notice', 'Reverted to version ' . $request->getParameter('revert_to'), false);
-    $this->clearCache($request);
+    $this->clearCache($this->gn_wiki_page);
     $this->redirect('gnWikiPageAdmin/edit?id='.$this->gn_wiki_page->getId());
   }
 
-  private function clearCache($request)
+  private function clearCache($gn_wiki_page = null)
   {
     $cache = $this->getContext()->getViewCacheManager();
-    $gn_wiki_page = $this->getGnWikiPage($request);
+
     if ($cache)
     {
-      $cache->remove('gnWikiPage/index?sf_format=*');
-      $cache->remove(sprintf('gnWikiPage/show?id=%s&slug=%s', $gn_wiki_page->getId(), $gn_wiki_page->getSlug()));
-      $cache->remove('@sf_cache_partial?module=gnWikiPage&action=_wiki_page&sf_cache_key='.$gn_wiki_page->getId());
+      $cache->remove('gnWikiPage/index'); // index page
+      if($gn_wiki_page)
+      {
+        $cache->remove(sprintf('gnWikiPage/show?id=%s&slug=%s', $gn_wiki_page->getId(), $gn_wiki_page->getSlug())); // show page
+        $cache->remove('@sf_cache_partial?module=gnWikiPage&action=_blog_page&sf_cache_key='.$gn_wiki_page->getId()); // show page partial.
+      }
     }
   }
 }

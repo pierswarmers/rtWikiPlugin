@@ -1,40 +1,16 @@
-<?php $admin_cred = sfConfig::get('app_gn_wiki_admin_credential', 'admin_wiki') . "\n" ?>
+<?php
 
-all:
-  is_secure: true
-compare:
-  credentials: <?php echo $admin_cred ?>
-create:
-  credentials: <?php echo $admin_cred ?>
-delete:
-  credentials: <?php echo $admin_cred ?>
-edit:
-  credentials: <?php echo $admin_cred ?>
-new:
-  credentials: <?php echo $admin_cred ?>
-revert:
-  credentials: <?php echo $admin_cred ?>
-undelete:
-  credentials: <?php echo $admin_cred ?>
-update:
-  credentials: <?php echo $admin_cred ?>
-versions:
-  credentials: <?php echo $admin_cred ?>
-edit:
-  credentials: <?php echo $admin_cred ?>
+if(sfConfig::has('app_gn_wiki_visitor_credential'))
+{
+  $cred = sfConfig::get('app_gn_wiki_visitor_credential') . "\n";
+}
+
+?>
 
 <?php if(sfConfig::get('app_gn_wiki_is_private', false)): ?>
-
-show:
+all:
   is_secure: true
-index:
-  is_secure: true
-
-<?php else: ?>
-
-show:
-  is_secure: false
-index:
-  is_secure: false
-
+  <?php if (isset($cred)): ?>
+  credentials: <?php echo $cred ?>
+  <?php endif; ?>
 <?php endif; ?>
