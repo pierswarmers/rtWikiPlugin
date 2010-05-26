@@ -1,7 +1,7 @@
-<?php include_partial('use'); include_partial('tools'); ?>
+<?php use_helper('I18N', 'Date', 'gnText', 'gnForm', 'gnDate') ?>
 <div class="gn-wiki-page-index">
   <?php if(sfConfig::get('app_gn_wiki_index_title', true)): ?>
-  <h1><?php echo __(sfConfig::get('app_gn_wiki_index_title', 'Blog Index')) ?></h1>
+  <h1><?php echo __(sfConfig::get('app_gn_wiki_index_title', 'Wiki Index')) ?></h1>
   <?php endif; ?>
   <?php if(count($gn_wiki_pages) > 0): ?>
   <ul class="gn-wiki-page-index-list">

@@ -1,4 +1,4 @@
-<?php use_helper('I18N', 'Date', 'gnText', 'gnDate') ?>
+<?php use_helper('I18N', 'Date', 'gnText', 'gnForm', 'gnDate') ?>
 <div class="gn-wiki-page-show">
   <h1><?php echo $gn_wiki_page->getTitle() ?></h1>
   <div class="gn-page-content clearfix">
