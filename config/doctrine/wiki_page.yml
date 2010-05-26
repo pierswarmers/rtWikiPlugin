@@ -1,8 +1,8 @@
-gnWikiPage:
+rtWikiPage:
 
   inheritance:
     type:              concrete
-    extends:           gnPage
+    extends:           rtPage
 
   columns:
     is_root:           { type: boolean, default: false }

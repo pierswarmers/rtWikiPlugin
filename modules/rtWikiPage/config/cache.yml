@@ -1,0 +1,16 @@
+<?php if(sfConfig::get('app_rt_wiki_is_private', false)): ?>
+
+_wiki_page:
+  enabled:     true
+
+<?php else: ?>
+
+index:
+  enabled:     true
+show:
+  enabled:     true
+feed:
+  enabled:     true
+  with_layout: true
+
+<?php endif; ?>
