@@ -2,8 +2,11 @@
         
 <h1><?php echo __('Listing Versions') ?></h1>
 
+<?php slot('rt-tools') ?>
+<?php include_partial('rtAdmin/standard_modal_tools', array('object' => $rt_wiki_page))?>
+<?php end_slot(); ?>
 
-<form id="rtWikiPageForm" action="<?php echo url_for('rtWikiPageAdmin/compare?id='.$rt_wiki_page->getId()) ?>">
+<form id="rtAdminForm" action="<?php echo url_for('rtWikiPageAdmin/compare?id='.$rt_wiki_page->getId()) ?>">
   <table class="stretch">
     <thead>
       <tr>
@@ -32,10 +35,3 @@
     </tbody>
   </table>
 </form>
-
-<?php slot('rt-side') ?>
-<p>
-  <button type="submit" class="button positive" onclick="$('#rtWikiPageForm').submit()"><?php echo __('Compare selection') ?></button>
-  <?php echo button_to(__('Cancel'),'rtWikiPageAdmin/index', array('class' => 'button cancel')) ?>
-</p>
-<?php end_slot(); ?>

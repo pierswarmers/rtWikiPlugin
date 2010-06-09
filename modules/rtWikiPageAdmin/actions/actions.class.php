@@ -88,7 +88,7 @@ class rtWikiPageAdminActions extends sfActions
     if(!$request->hasParameter('version1') || !$request->hasParameter('version2'))
     {
       $this->getUser()->setFlash('error', 'Please select two versions to compare.', false);
-      $this->redirect('rtWikiPage/versions?id='.$this->rt_wiki_page->getId());
+      $this->redirect('rtWikiPageAdmin/versions?id='.$this->rt_wiki_page->getId());
     }
 
     $this->version_1 = $request->getParameter('version1');
@@ -133,6 +133,16 @@ class rtWikiPageAdminActions extends sfActions
             }
           }
         }
+      }
+      
+      $action = $request->getParameter('rt_post_save_action', 'index');
+
+      if($action == 'edit')
+      {
+        $this->redirect('rtWikiPageAdmin/edit?id='.$rt_wiki_page->getId());
+      }elseif($action == 'show')
+      {
+        $this->redirect('rt_wiki_page_show',$rt_wiki_page);
       }
       $this->redirect('rtWikiPageAdmin/index');
     }
