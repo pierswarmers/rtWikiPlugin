@@ -151,6 +151,7 @@ class rtWikiPageAdminActions extends sfActions
       }
       $this->redirect('rtWikiPageAdmin/index');
     }
+    $this->getUser()->setFlash('default_error', true, false);
   }
 
   public function executeRevert(sfWebRequest $request)

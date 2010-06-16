@@ -6,6 +6,8 @@
 <?php include_partial('rtAdmin/standard_modal_tools', array('object' => $rt_wiki_page))?>
 <?php end_slot(); ?>
 
+<?php include_partial('rtAdmin/flashes') ?>
+
 <form id="rtAdminForm" action="<?php echo url_for('rtWikiPageAdmin/compare?id='.$rt_wiki_page->getId()) ?>">
   <table class="stretch">
     <thead>
