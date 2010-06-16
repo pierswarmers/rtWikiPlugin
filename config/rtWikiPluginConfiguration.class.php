@@ -33,7 +33,7 @@ class rtWikiPluginConfiguration extends sfPluginConfiguration
     $routing->prependRoute(
       'rt_wiki_page_show',
       new sfDoctrineRoute(
-        '/wiki/:slug/:id',
+        '/wiki/:id/:slug',
           array('module' => 'rtWikiPage', 'action' => 'show'),
           array('id' => '\d+', 'sf_method' => array('get')),
           array('model' => 'rtWikiPage', 'type' => 'object')

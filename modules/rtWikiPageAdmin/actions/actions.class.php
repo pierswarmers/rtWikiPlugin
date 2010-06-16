@@ -23,9 +23,14 @@ class rtWikiPageAdminActions extends sfActions
     rtTemplateToolkit::setTemplateForMode('backend');
   }
 
+  public function executeShow(sfWebRequest $request)
+  {
+    rtSiteToolkit::siteRedirect($this->getrtWikiPage($request));
+  }
+
   public function executeIndex(sfWebRequest $request)
   {
-    $query = Doctrine::getTable('rtWikiPage')->addSiteQuery();
+    $query = Doctrine::getTable('rtWikiPage')->getQuery();
     $query->orderBy('page.id DESC');
 
     $this->rt_wiki_pages = $query->execute();
@@ -142,7 +147,7 @@ class rtWikiPageAdminActions extends sfActions
         $this->redirect('rtWikiPageAdmin/edit?id='.$rt_wiki_page->getId());
       }elseif($action == 'show')
       {
-        $this->redirect('rt_wiki_page_show',$rt_wiki_page);
+        rtSiteToolkit::siteRedirect($rt_wiki_page);
       }
       $this->redirect('rtWikiPageAdmin/index');
     }

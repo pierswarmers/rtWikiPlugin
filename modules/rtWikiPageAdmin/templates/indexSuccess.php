@@ -25,7 +25,7 @@
       <td><?php echo $rt_wiki_page->getCreatedAt() ?></td>
       <td>
         <ul class="rt-admin-tools">
-          <li><?php echo rt_button_show(url_for('rt_wiki_page_show', $rt_wiki_page)) ?></li>
+          <li><?php echo rt_button_show(url_for('rtWikiPageAdmin/show?id='.$rt_wiki_page->getId())) ?></li>
           <li><?php echo rt_button_edit(url_for('rtWikiPageAdmin/edit?id='.$rt_wiki_page->getId())) ?></li>
           <li><?php echo rt_button_delete(url_for('rtWikiPageAdmin/delete?id='.$rt_wiki_page->getId())) ?></li>
         </ul>
