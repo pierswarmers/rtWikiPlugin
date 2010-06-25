@@ -59,6 +59,8 @@ class BasertWikiPageActions extends sfActions
       $this->forward('rtGuardAuth','secure');
     }
 
+    rtSiteToolkit::checkSiteReference($this->rt_wiki_page);
+    
     if($this->rt_wiki_page->getIsRoot())
     {
       $this->redirect('@rt_wiki_page_index');
