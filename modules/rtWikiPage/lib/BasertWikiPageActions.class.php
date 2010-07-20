@@ -36,7 +36,7 @@ class BasertWikiPageActions extends sfActions
   {
     rtTemplateToolkit::setFrontendTemplateDir();
 
-    $this->rt_wiki_page = Doctrine::getTable('rtWikiPage')->findOneByIsRoot(1);
+    $this->rt_wiki_page = Doctrine::getTable('rtWikiPage')->findOneByIsRoot();
 
     if($this->rt_wiki_page)
     {
