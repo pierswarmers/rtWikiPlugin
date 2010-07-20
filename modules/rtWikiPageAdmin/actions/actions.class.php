@@ -33,11 +33,9 @@ class rtWikiPageAdminActions extends sfActions
     $query = Doctrine::getTable('rtWikiPage')->getQuery();
     $query->orderBy('page.created_at DESC');
 
-    //$this->rt_wiki_pages = $query->execute();
-
     $this->pager = new sfDoctrinePager(
       'rtWikiPage',
-      sfConfig::get('app_rt_wiki_max_per_page', 10)
+      sfConfig::get('app_rt_wiki_max_per_page', 50)
     );
 
     $this->pager->setQuery($query);
