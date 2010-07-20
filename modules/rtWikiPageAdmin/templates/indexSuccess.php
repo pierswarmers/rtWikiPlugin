@@ -19,7 +19,7 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach ($rt_wiki_pages as $rt_wiki_page): ?>
+    <?php foreach ($pager->getResults() as $rt_wiki_page): ?>
     <tr>
       <td><a href="<?php echo url_for('rtWikiPageAdmin/edit?id='.$rt_wiki_page->getId()) ?>"><?php echo $rt_wiki_page->getTitle() ?></a></td>
       <td><?php echo rt_nice_boolean($rt_wiki_page->getPublished()) ?></td>
@@ -36,3 +36,5 @@
     <?php endforeach; ?>
   </tbody>
 </table>
+
+<?php include_partial('rtAdmin/pagination', array('pager' => $pager)); ?>
