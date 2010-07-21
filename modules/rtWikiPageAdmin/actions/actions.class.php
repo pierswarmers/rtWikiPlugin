@@ -35,7 +35,7 @@ class rtWikiPageAdminActions extends sfActions
 
     $this->pager = new sfDoctrinePager(
       'rtWikiPage',
-      sfConfig::get('app_rt_wiki_max_per_page', 50)
+      sfConfig::get('app_rt_admin_pagination_limit', 50)
     );
 
     $this->pager->setQuery($query);
