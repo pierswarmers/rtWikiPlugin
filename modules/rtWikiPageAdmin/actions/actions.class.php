@@ -182,18 +182,8 @@ class rtWikiPageAdminActions extends sfActions
     $this->redirect('rtWikiPageAdmin/edit?id='.$this->rt_wiki_page->getId());
   }
 
-  private function clearCache($rt_wiki_page = null)
+  private function clearCache(rtWikiPage $rt_wiki_page = null)
   {
-    $cache = $this->getContext()->getViewCacheManager();
-
-    if ($cache)
-    {
-      $cache->remove('rtWikiPage/index'); // index page
-      if($rt_wiki_page)
-      {
-        $cache->remove(sprintf('rtWikiPage/show?id=%s&slug=%s', $rt_wiki_page->getId(), $rt_wiki_page->getSlug())); // show page
-        $cache->remove('@sf_cache_partial?module=rtWikiPage&action=_blog_page&sf_cache_key='.$rt_wiki_page->getId()); // show page partial.
-      }
-    }
+    rtWikiPageCacheToolkit::clearCache($rt_wiki_page);
   }
 }
