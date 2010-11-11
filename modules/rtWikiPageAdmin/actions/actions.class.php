@@ -132,6 +132,31 @@ class rtWikiPageAdminActions extends sfActions
     );
   }
 
+  public function executeRevert(sfWebRequest $request)
+  {
+    $this->rt_wiki_page = $this->getrtWikiPage($request);
+    $this->rt_wiki_page->revert($request->getParameter('revert_to'));
+    $this->rt_wiki_page->save();
+    $this->getUser()->setFlash('notice', 'Reverted to version ' . $request->getParameter('revert_to'), false);
+    $this->clearCache($this->rt_wiki_page);
+    $this->redirect('rtWikiPageAdmin/edit?id='.$this->rt_wiki_page->getId());
+  }
+
+  public function executeToggle(sfWebRequest $request)
+  {
+    $rt_wiki_page = Doctrine_Core::getTable('rtWikiPage')->find(array($request->getParameter('id')));
+    if(!$rt_wiki_page)
+    {
+      $this->status = 'error';
+      return sfView::SUCCESS;
+    }
+
+    $rt_wiki_page->setPublished(!$rt_wiki_page->getPublished());
+    $this->status = $rt_wiki_page->getPublished() ? 'activated' : 'deactivated';
+    $rt_wiki_page->save();
+    $this->clearCache($rt_wiki_page);
+  }
+
   protected function processForm(sfWebRequest $request, sfForm $form)
   {
     $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
@@ -170,16 +195,6 @@ class rtWikiPageAdminActions extends sfActions
       $this->redirect('rtWikiPageAdmin/index');
     }
     $this->getUser()->setFlash('default_error', true, false);
-  }
-
-  public function executeRevert(sfWebRequest $request)
-  {
-    $this->rt_wiki_page = $this->getrtWikiPage($request);
-    $this->rt_wiki_page->revert($request->getParameter('revert_to'));
-    $this->rt_wiki_page->save();
-    $this->getUser()->setFlash('notice', 'Reverted to version ' . $request->getParameter('revert_to'), false);
-    $this->clearCache($this->rt_wiki_page);
-    $this->redirect('rtWikiPageAdmin/edit?id='.$this->rt_wiki_page->getId());
   }
 
   private function clearCache(rtWikiPage $rt_wiki_page = null)

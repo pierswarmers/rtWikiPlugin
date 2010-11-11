@@ -8,6 +8,12 @@
 
 <?php include_partial('rtAdmin/flashes') ?>
 
+<script type="text/javascript">
+  $(function() {
+    enablePublishToggle('<?php echo url_for('rtWikiPageAdmin/toggle') ?>');
+  });
+</script>
+
 <table>
   <thead>
     <tr>
@@ -22,7 +28,10 @@
     <?php foreach ($pager->getResults() as $rt_wiki_page): ?>
     <tr>
       <td><a href="<?php echo url_for('rtWikiPageAdmin/edit?id='.$rt_wiki_page->getId()) ?>"><?php echo $rt_wiki_page->getTitle() ?></a></td>
-      <td><?php echo rt_nice_boolean($rt_wiki_page->getPublished()) ?></td>
+      <td class="rt-admin-publish-toggle">
+        <?php echo rt_nice_boolean($rt_wiki_page->getPublished()) ?>
+        <div style="display:none;"><?php echo $rt_wiki_page->getId() ?></div>
+      </td>
       <td><?php echo link_to_if($rt_wiki_page->version > 1, $rt_wiki_page->version, 'rtWikiPageAdmin/versions?id='.$rt_wiki_page->getId()) ?></td>
       <td><?php echo $rt_wiki_page->getCreatedAt() ?></td>
       <td>
