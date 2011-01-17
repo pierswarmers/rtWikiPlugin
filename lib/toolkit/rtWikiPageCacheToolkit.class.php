@@ -26,10 +26,11 @@ class rtWikiPageCacheToolkit
       rtGlobalCacheToolkit::clearCache();
       
       $cache->remove('rtWikiPage/index'); // index page
+      
       if($rt_wiki_page)
       {
         $cache->remove(sprintf('rtWikiPage/show?id=%s&slug=%s', $rt_wiki_page->getId(), $rt_wiki_page->getSlug())); // show page
-        $cache->remove('@sf_cache_partial?module=rtWikiPage&action=_blog_page&sf_cache_key='.$rt_wiki_page->getId()); // show page partial.
+        $cache->remove('@sf_cache_partial?module=rtWikiPage&action=_wiki_page&sf_cache_key='.$rt_wiki_page->getId()); // show page partial.
       }
     }
   }
