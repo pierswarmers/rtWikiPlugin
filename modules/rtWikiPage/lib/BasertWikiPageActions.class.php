@@ -25,6 +25,7 @@ class BasertWikiPageActions extends sfActions
   public function preExecute()
   {
     sfConfig::set('app_rt_node_title', 'Wiki');
+    rtTemplateToolkit::setFrontendTemplateDir();
   }
 
   /**
@@ -34,8 +35,6 @@ class BasertWikiPageActions extends sfActions
    */
   public function executeIndex(sfWebRequest $request)
   {
-    rtTemplateToolkit::setFrontendTemplateDir();
-
     $this->rt_wiki_page = Doctrine::getTable('rtWikiPage')->findOneByIsRoot();
 
     if($this->rt_wiki_page)
@@ -50,7 +49,6 @@ class BasertWikiPageActions extends sfActions
   
   public function executeShow(sfWebRequest $request)
   {
-    rtTemplateToolkit::setFrontendTemplateDir();
     $this->rt_wiki_page = $this->getRoute()->getObject();
     $this->forward404Unless($this->rt_wiki_page);
 
