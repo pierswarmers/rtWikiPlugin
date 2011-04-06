@@ -1,12 +1,21 @@
 <?php
 
-/**
- * rtWikiPageAdmin actions.
+/*
+ * This file is part of the rtWikiPagePlugin package.
  *
- * @package    symfony
- * @subpackage rtWikiPageAdmin
- * @author     Your name here
- * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * (c) 2006-2011 digital Wranglers <steercms@wranglers.com.au>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/**
+ * rtWikiPageAdminActions
+ *
+ * @package    rtWikiPagePlugin
+ * @subpackage modules
+ * @author     Piers Warmers <piers@wranglers.com.au>
+ * @author     Konny Zurcher <konny@wranglers.com.au>
  */
 class rtWikiPageAdminActions extends sfActions
 {
@@ -48,7 +57,7 @@ class rtWikiPageAdminActions extends sfActions
   private function stats()
   {
     // Dates
-    $date_now         = date("Y-m-d H:i:s");
+    $date_now = date("Y-m-d H:i:s");
 
     // SQL queries
     $con = Doctrine_Manager::getInstance()->getCurrentConnection();
@@ -83,11 +92,8 @@ class rtWikiPageAdminActions extends sfActions
   public function executeCreate(sfWebRequest $request)
   {
     $this->forward404Unless($request->isMethod(sfRequest::POST));
-
     $this->form = new rtWikiPageForm();
-
     $this->processForm($request, $this->form);
-
     $this->setTemplate('new');
   }
 
@@ -102,7 +108,6 @@ class rtWikiPageAdminActions extends sfActions
     $this->forward404Unless($request->isMethod(sfRequest::POST) || $request->isMethod(sfRequest::PUT));
     $rt_wiki_page = $this->getrtWikiPage($request);
     $this->form = new rtWikiPageForm($rt_wiki_page);
-
     $this->processForm($request, $this->form);
     $this->setTemplate('edit');
   }
@@ -114,7 +119,7 @@ class rtWikiPageAdminActions extends sfActions
     $rt_wiki_page = $this->getrtWikiPage($request);
     $rt_wiki_page->delete();
     $this->clearCache($rt_wiki_page);
-
+    $this->getDispatcher($request)->notify(new sfEvent($this, 'doctrine.admin.delete_object', array('object' => $rt_wiki_page)));
     $this->redirect('rtWikiPageAdmin/index');
   }
 
@@ -185,7 +190,9 @@ class rtWikiPageAdminActions extends sfActions
     {
       $rt_wiki_page = $form->save();
       $this->clearCache($rt_wiki_page);
-      
+
+      $this->getDispatcher($request)->notify(new sfEvent($this, 'doctrine.admin.save_object', array('object' => $rt_wiki_page)));
+
       if($rt_wiki_page->getIsRoot())
       {
         // Run a clean on other wiki pages marked as root. Only one root page allowed.
@@ -218,8 +225,21 @@ class rtWikiPageAdminActions extends sfActions
     $this->getUser()->setFlash('default_error', true, false);
   }
 
+  /**
+   * Clean the cache relating to rtWikiPage
+   *
+   * @param rtWikiPage $rt_wiki_page
+   */
   private function clearCache(rtWikiPage $rt_wiki_page = null)
   {
     rtWikiPageCacheToolkit::clearCache($rt_wiki_page);
+  }
+
+  /**
+   * @return sfEventDispatcher
+   */
+  protected function getDispatcher(sfWebRequest $request)
+  {
+    return ProjectConfiguration::getActive()->getEventDispatcher(array('request' => $request));
   }
 }
