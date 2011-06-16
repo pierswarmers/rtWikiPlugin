@@ -8,4 +8,4 @@ slot('rt-title', $rt_wiki_page->getTitle());
 
 ?>
 
-<?php include_partial('site_page', array('rt_site_page' => $rt_wiki_page, 'sf_cache_key' => $rt_wiki_page->getId())) ?>
+<?php include_partial('wiki_page', array('rt_wiki_page' => $rt_wiki_page, 'sf_cache_key' => $rt_wiki_page->getId())) ?>
